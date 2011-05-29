@@ -1,6 +1,9 @@
 = I'm Learning Ruby With Ruby Koans
 
-This set is my attempt at completing all the tests in Ruby Koans tests so be careful as they contain answers. But since I'm learning Ruby along the way I have included in depth notes as I complete each of the test files for reference. I come from an AS3/JS background so you'll see references to that in the notes.
+This set is my attempt at completing all the tests in Ruby Koans tests so be careful 
+as they contain answers. But since I'm learning Ruby along the way I have included 
+in depth notes as I complete each of the test files for reference. I come from an 
+AS3/JS background so you'll see references to that in the notes.
 
 = EdgeCase Ruby Koans
 
