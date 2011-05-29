@@ -4,7 +4,9 @@ class AboutNil < EdgeCase::Koan
   def test_nil_is_an_object
     assert_equal true, nil.is_a?(Object), "Unlike NULL in other languages"
   end
-
+  
+  # Everything in Ruby is an object, even nil
+  
   def test_you_dont_get_null_pointer_errors_when_calling_methods_on_nil
     # What happens when you call a method that doesn't exist.  The
     # following begin/rescue/end code block captures the exception and
@@ -17,7 +19,8 @@ class AboutNil < EdgeCase::Koan
 
       # What message was attached to the exception?
       # (HINT: replace __ with part of the error message.)
-      #assert_match(/NoMethodError/, ex.message)
+      #assert_match(/"no method"/, ex.message)
+      # the keyword here is not "no method" but rather "undefined method"
     end
   end
 
@@ -34,5 +37,8 @@ class AboutNil < EdgeCase::Koan
     #    obj == nil
     # Why?
   end
-
+  
+  # Better to use .nil? since everything in Ruby is an object, while the 
+  # latter does work just fine its not in the Ruby style
+  
 end
