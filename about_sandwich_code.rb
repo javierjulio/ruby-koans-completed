@@ -14,7 +14,7 @@ class AboutSandwichCode < EdgeCase::Koan
   end
 
   def test_counting_lines
-    assert_equal __, count_lines("example_file.txt")
+    assert_equal 4, count_lines("example_file.txt")
   end
 
   # ------------------------------------------------------------------
@@ -29,9 +29,15 @@ class AboutSandwichCode < EdgeCase::Koan
   end
 
   def test_finding_lines
-    assert_equal __, find_line("example_file.txt")
+    assert_equal "test\n", find_line("example_file.txt")
   end
-
+  
+  # An earlier test will reference this file but keep yourself from 
+  # jumping ahead to early. I came here and read the comments but it 
+  # was confusing. Completing the previous test on blocks will help 
+  # and everything here will make sense about the problem behind 
+  # sandwich code.
+  
   # ------------------------------------------------------------------
   # THINK ABOUT IT:
   #
@@ -53,7 +59,7 @@ class AboutSandwichCode < EdgeCase::Koan
   #
   # Consider the following code:
   #
-
+  
   def file_sandwich(file_name)
     file = open(file_name)
     yield(file)
@@ -74,17 +80,21 @@ class AboutSandwichCode < EdgeCase::Koan
   end
 
   def test_counting_lines2
-    assert_equal __, count_lines2("example_file.txt")
+    assert_equal 4, count_lines2("example_file.txt")
   end
 
   # ------------------------------------------------------------------
-
+  
   def find_line2(file_name)
-    # Rewrite find_line using the file_sandwich library function.
+    file_sandwich(file_name) do |file|
+      while line = file.gets
+        return line if line.match(/e/)
+      end
+    end
   end
 
   def test_finding_lines2
-    assert_equal __, find_line2("example_file.txt")
+    assert_equal "test\n", find_line2("example_file.txt")
   end
 
   # ------------------------------------------------------------------
@@ -100,7 +110,7 @@ class AboutSandwichCode < EdgeCase::Koan
   end
 
   def test_open_handles_the_file_sandwich_when_given_a_block
-    assert_equal __, count_lines3("example_file.txt")
+    assert_equal 4, count_lines3("example_file.txt")
   end
 
 end
