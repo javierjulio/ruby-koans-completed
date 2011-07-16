@@ -9,7 +9,7 @@ class AboutOpenClasses < EdgeCase::Koan
 
   def test_as_defined_dogs_do_bark
     fido = Dog.new
-    assert_equal __, fido.bark
+    assert_equal "WOOF", fido.bark
   end
 
   # ------------------------------------------------------------------
@@ -23,8 +23,8 @@ class AboutOpenClasses < EdgeCase::Koan
 
   def test_after_reopening_dogs_can_both_wag_and_bark
     fido = Dog.new
-    assert_equal __, fido.wag
-    assert_equal __, fido.bark
+    assert_equal "HAPPY", fido.wag
+    assert_equal "WOOF", fido.bark
   end
 
   # ------------------------------------------------------------------
@@ -34,7 +34,9 @@ class AboutOpenClasses < EdgeCase::Koan
       (self % 2) == 0
     end
   end
-
+  
+  # TODO: reference previous tests on scope in about_constants.rb
+  
   def test_even_existing_built_in_classes_can_be_reopened
     assert_equal __, 1.even?
     assert_equal __, 2.even?

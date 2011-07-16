@@ -29,11 +29,11 @@ class AboutClasses < EdgeCase::Koan
     fido = Dog2.new
     fido.set_name("Fido")
 
-    assert_raise(___) do
+    assert_raise(NoMethodError) do
       fido.name
     end
 
-    assert_raise(___) do
+    assert_raise(SyntaxError) do
       eval "fido.@name"
       # NOTE: Using eval because the above line is a syntax error.
     end
@@ -43,15 +43,15 @@ class AboutClasses < EdgeCase::Koan
     fido = Dog2.new
     fido.set_name("Fido")
 
-    assert_equal __, fido.instance_variable_get("@name")
+    assert_equal "Fido", fido.instance_variable_get("@name")
   end
 
   def test_you_can_rip_the_value_out_using_instance_eval
     fido = Dog2.new
     fido.set_name("Fido")
 
-    assert_equal __, fido.instance_eval("@name")  # string version
-    assert_equal __, fido.instance_eval { @name } # block version
+    assert_equal "Fido", fido.instance_eval("@name")  # string version
+    assert_equal "Fido", fido.instance_eval { @name } # block version
   end
 
   # ------------------------------------------------------------------
@@ -69,7 +69,7 @@ class AboutClasses < EdgeCase::Koan
     fido = Dog3.new
     fido.set_name("Fido")
 
-    assert_equal __, fido.name
+    assert_equal "Fido", fido.name
   end
 
   # ------------------------------------------------------------------
@@ -87,7 +87,7 @@ class AboutClasses < EdgeCase::Koan
     fido = Dog4.new
     fido.set_name("Fido")
 
-    assert_equal __, fido.name
+    assert_equal "Fido", fido.name
   end
 
   # ------------------------------------------------------------------
@@ -101,7 +101,7 @@ class AboutClasses < EdgeCase::Koan
     fido = Dog5.new
 
     fido.name = "Fido"
-    assert_equal __, fido.name
+    assert_equal "Fido", fido.name
   end
 
   # ------------------------------------------------------------------
@@ -115,22 +115,25 @@ class AboutClasses < EdgeCase::Koan
 
   def test_initialize_provides_initial_values_for_instance_variables
     fido = Dog6.new("Fido")
-    assert_equal __, fido.name
+    assert_equal "Fido", fido.name
   end
 
   def test_args_to_new_must_match_initialize
-    assert_raise(___) do
+    assert_raise(ArgumentError) do
       Dog6.new
     end
     # THINK ABOUT IT:
     # Why is this so?
+    # 
+    # Tthe initialize method has a required argument of initial_name. 
+    # If it had a default value then no error would occur.
   end
 
   def test_different_objects_have_difference_instance_variables
     fido = Dog6.new("Fido")
     rover = Dog6.new("Rover")
 
-    assert_equal __, rover.name != fido.name
+    assert_equal true, rover.name != fido.name
   end
 
   # ------------------------------------------------------------------
@@ -147,7 +150,7 @@ class AboutClasses < EdgeCase::Koan
     end
 
     def to_s
-      __
+      @name
     end
 
     def inspect
@@ -159,32 +162,32 @@ class AboutClasses < EdgeCase::Koan
     fido = Dog7.new("Fido")
 
     fidos_self = fido.get_self
-    assert_equal __, fidos_self
+    assert_equal fidos_self, fidos_self
   end
 
   def test_to_s_provides_a_string_version_of_the_object
     fido = Dog7.new("Fido")
-    assert_equal __, fido.to_s
+    assert_equal "Fido", fido.to_s
   end
 
   def test_to_s_is_used_in_string_interpolation
     fido = Dog7.new("Fido")
-    assert_equal __, "My dog is #{fido}"
+    assert_equal "My dog is Fido", "My dog is #{fido}"
   end
 
   def test_inspect_provides_a_more_complete_string_version
     fido = Dog7.new("Fido")
-    assert_equal __, fido.inspect
+    assert_equal "<Dog named 'Fido'>", fido.inspect
   end
 
   def test_all_objects_support_to_s_and_inspect
     array = [1,2,3]
 
-    assert_equal __, array.to_s
-    assert_equal __, array.inspect
+    assert_equal "123", array.to_s
+    assert_equal "[1, 2, 3]", array.inspect
 
-    assert_equal __, "STRING".to_s
-    assert_equal __, "STRING".inspect
+    assert_equal "STRING", "STRING".to_s
+    assert_equal "\"STRING\"", "STRING".inspect
   end
 
 end
