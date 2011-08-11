@@ -18,7 +18,7 @@ class AboutScope < EdgeCase::Koan
   end
 
   def test_dog_is_not_available_in_the_current_scope
-    assert_raise(___) do
+    assert_raise(NameError) do
       fido = Dog.new
     end
   end
@@ -26,11 +26,11 @@ class AboutScope < EdgeCase::Koan
   def test_you_can_reference_nested_classes_using_the_scope_operator
     fido = Jims::Dog.new
     rover = Joes::Dog.new
-    assert_equal __, fido.identify
-    assert_equal __, rover.identify
+    assert_equal :jims_dog, fido.identify
+    assert_equal :joes_dog, rover.identify
 
-    assert_equal __, fido.class != rover.class
-    assert_equal __, Jims::Dog != Joes::Dog
+    assert_equal true, fido.class != rover.class
+    assert_equal true, Jims::Dog != Joes::Dog
   end
 
   # ------------------------------------------------------------------
@@ -39,15 +39,25 @@ class AboutScope < EdgeCase::Koan
   end
 
   def test_bare_bones_class_names_assume_the_current_scope
-    assert_equal __, AboutScope::String == String
+    assert_equal true, AboutScope::String == String
   end
 
+  # Not a match because the String reference here matches the String 
+  # class within this class (AboutScope). That's the default behavior. 
+  # Whereas the string "HI" will use the language defined String class.
   def test_nested_string_is_not_the_same_as_the_system_string
-    assert_equal __, String == "HI".class
+    # puts String     # > AboutScope::String
+    # puts "HI".class # > String
+    assert_equal false, String == "HI".class
   end
 
+  # Since if we use String it would reference the String class within 
+  # this class, to always make sure we get the global system defined 
+  # one we just prefix it with ::
   def test_use_the_prefix_scope_operator_to_force_the_global_scope
-    assert_equal __, ::String == "HI".class
+    # puts ::String   # > String
+    # puts "HI".class # > String
+    assert_equal true, ::String == "HI".class
   end
 
   # ------------------------------------------------------------------
@@ -55,25 +65,37 @@ class AboutScope < EdgeCase::Koan
   PI = 3.1416
 
   def test_constants_are_defined_with_an_initial_uppercase_letter
-    assert_equal __, PI
+    assert_equal 3.1416, PI
   end
 
   # ------------------------------------------------------------------
-
+  
+  # Class names are just constants. Remember in Ruby just the first 
+  # letter of a variable if capitalized makes it a constant.
+  # http://www.ruby-doc.org/docs/ProgrammingRuby/html/classes.html
+  # You can pass around Classes just like you can in AS3, for example, 
+  # we can pass a Class like String to a method and reference a method 
+  # on that argument.
+  # 
+  # def factory(klass, *args)
+  #   klass.new(*args)
+  # end
+  # factory(String, "Hello"  # > "Hello"
+  
   MyString = ::String
 
   def test_class_names_are_just_constants
-    assert_equal __, MyString == ::String
-    assert_equal __, MyString == "HI".class
+    assert_equal true, MyString == ::String
+    assert_equal true, MyString == "HI".class
   end
 
   def test_constants_can_be_looked_up_explicitly
-    assert_equal __, PI == AboutScope.const_get("PI")
-    assert_equal __, MyString == AboutScope.const_get("MyString")
+    assert_equal true, PI == AboutScope.const_get("PI")
+    assert_equal true, MyString == AboutScope.const_get("MyString")
   end
 
   def test_you_can_get_a_list_of_constants_for_any_class_or_module
-    assert_equal __, Jims.constants
-    assert Object.constants.size > _n_
+    assert_equal ["Dog"], Jims.constants
+    assert Object.constants.size > 0
   end
 end
