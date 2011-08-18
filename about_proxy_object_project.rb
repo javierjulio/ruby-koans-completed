@@ -13,12 +13,35 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 # of the Proxy class is given in the AboutProxyObjectProject koan.
 
 class Proxy
+  
+  attr_reader :messages
+  
   def initialize(target_object)
     @object = target_object
-    # ADD MORE CODE HERE
+    @messages = []
   end
-
-  # WRITE CODE HERE
+  
+  def called?(method_name)
+    @messages.include? method_name
+  end
+  
+  def number_of_times_called(method_name)
+    @messages.select { |item| item == method_name }.length
+  end
+  
+  def method_missing(method_name, *args, &block)
+    if @object.respond_to? method_name then
+      # track each method called that target object can respond to
+      @messages.push method_name
+      
+      # call the method!
+      @object.send method_name, *args
+    else
+      # all other cases: default behavior (raises NoMethodError)
+      super method_name, *args, &block
+    end
+  end
+  
 end
 
 # The proxy object should pass the following Koan:
@@ -40,7 +63,14 @@ class AboutProxyObjectProject < EdgeCase::Koan
     assert_equal 10, tv.channel
     assert tv.on?
   end
-
+  
+  # Careful, I misunderstood the messages properties to proxy through 
+  # some property in Television object that would dynamically return 
+  # the list of possible messages/properties but that's not the case. 
+  # What we should be doing to support messages property is to track 
+  # each of the messages sent to the tv instance as shown in the method 
+  # and add to an array so it matches what is seen below. Was thinking 
+  # to far ahead. Keep it simple.
   def test_proxy_records_messages_sent_to_tv
     tv = Proxy.new(Television.new)
     
