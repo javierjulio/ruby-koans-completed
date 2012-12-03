@@ -26,7 +26,7 @@ class Proxy
   end
   
   def number_of_times_called(method_name)
-    @messages.select { |item| item == method_name }.length
+    @messages.count method_name
   end
   
   def method_missing(method_name, *args, &block)
